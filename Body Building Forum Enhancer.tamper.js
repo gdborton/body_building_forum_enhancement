@@ -9,14 +9,28 @@
 // ==/UserScript==
 
 $(document).ready(function(){
+    var fileTypes = [".jpg", ".jpeg", ".png", ".gif"];
+    var allLinks = $('a');
     
-    $.expr[":"].contains = $.expr.createPseudo(function(arg) {
-    	return function( elem ) {
-        	return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
-    	};
-	});
-    
-    $('a:contains(.jpg)').each(function(){
-        $(this).replaceWith("<img src=\""+$(this).attr('href')+"\">"+$(this).text()+"</img>");
+    allLinks.each(function(){
+        var element = $(this);
+        
+        if (validImageLink(element)) {
+            element.replaceWith("<img src=\""+$(this).attr('href')+"\">"+$(this).text()+"</img>");
+        }
     });
+    
+    function validImageLink(element) {
+        
+        var returnValue = false;
+        
+        $.each(fileTypes, function(index, value) {
+            if (element.text().toLowerCase().indexOf(value) > -1) {
+                returnValue = true;
+                return false; // Breaks the jQuery loop
+            }
+        });
+        
+        return returnValue;
+    }
 });
