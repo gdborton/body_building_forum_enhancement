@@ -20,6 +20,8 @@ $(document).ready(function(){
         }
     });
     
+    $('.inlineimg').remove();
+    
     function validImageLink(element) {
         
         var returnValue = false;
